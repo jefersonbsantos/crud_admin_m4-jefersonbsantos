@@ -1,9 +1,7 @@
 import format from "pg-format";
 import { client } from "../database";
 import {
-  User,
   UserCreate,
-  UserRead,
   UserResult,
   UserReturn,
 } from "../interfaces/user.interfaces";
@@ -12,7 +10,6 @@ import {
   userPasswordSchema,
 } from "../schemas/user.schemas";
 import { hash } from "bcryptjs";
-import { error } from "console";
 import AppError from "../errors/AppError";
 
 const create = async (payload: UserCreate): Promise<UserReturn> => {
@@ -62,8 +59,11 @@ const retrieve = async (id: string) => {
   return query.rows;
 };
 
-const deleteUser = async (userId: string): Promise<void> => {
-  await client.query('DELETE FROM "courses" WHERE "id" = $1', [userId]);
+const deleteUser = async (userId: string, courseId: string): Promise<void> => {
+  await client.query(
+    'DELETE FROM "userCourses" WHERE "userId" = $1 AND "courseId" = $2;',
+    [userId, courseId]
+  );
 };
 
 export default { create, read, retrieve, deleteUser };

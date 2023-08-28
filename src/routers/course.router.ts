@@ -7,6 +7,10 @@ import courseControllers from "../controllers/course.controllers";
 import userControllers from "../controllers/user.controllers";
 import userCourseControllers from "../controllers/userCourse.controllers";
 import verifyUserPermission from "../middlewares/verifyUserPermission.middleware";
+import {
+  validateCourseIdExists,
+  validateIdExists,
+} from "../middlewares/validateIdExists.middleware";
 
 const courseRouter: Router = Router();
 
@@ -20,8 +24,27 @@ courseRouter.post(
 
 courseRouter.get("", courseControllers.read);
 
-courseRouter.get("/:id/users");
-courseRouter.post("/:courseId/users/:userId", userCourseControllers.addCourse);
-courseRouter.delete("/:courseId/users/:userId", userControllers.deleteCourse);
+courseRouter.get(
+  "/:id/users",
+  verifyToken,
+  validateAdmin,
+  courseControllers.retrieve
+);
+courseRouter.post(
+  "/:courseId/users/:userId",
+  verifyToken,
+  verifyUserPermission,
+  validateIdExists,
+  validateCourseIdExists,
+  userCourseControllers.addCourse
+);
+courseRouter.delete(
+  "/:courseId/users/:userId",
+  verifyToken,
+  verifyUserPermission,
+  validateIdExists,
+  validateCourseIdExists,
+  userControllers.deleteCourse
+);
 
 export default courseRouter;

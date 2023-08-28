@@ -1,10 +1,7 @@
 import format from "pg-format";
 import { client } from "../database";
-import { QueryResult } from "pg";
-import AppError from "../errors/AppError";
 import {
   UserCourse,
-  UserCourseAddCourse,
   UserCourseCreate,
   UserCourseRead,
   UserCourseResult,
@@ -51,25 +48,11 @@ const read = async (admin: boolean): Promise<UserCourseRead> => {
   return query.rows;
 };
 
-const addCourse = async (
-  payload: UserCourseAddCourse,
-  courseId: string
-): Promise<string> => {
-  const query: QueryResult = await client.query(
-    'SELECT * FROM "userCourses" WHERE "courseId" = $1 AND "userId" = $2;',
-    [payload.courseId, courseId]
-  );
-
-  if (query.rowCount !== 0) {
-    throw new AppError("User/course not found", 404);
-  }
-
+const addCourse = async (courseId: string, userId: string): Promise<void> => {
   await client.query(
     'INSERT INTO "userCourses" ("courseId", "userId") VALUES ($1, $2);',
-    [payload.courseId, courseId]
+    [courseId, userId]
   );
-
-  return "User successfully vinculed to course";
 };
 
 export default { create, read, addCourse };

@@ -22,12 +22,14 @@ const read = async (req: Request, res: Response): Promise<Response> => {
 };
 
 const addCourse = async (req: Request, res: Response): Promise<Response> => {
-  const message: string = await userCourseServices.addCourse(
-    req.body,
-    req.params.userCourseId
+  const message = await userCourseServices.addCourse(
+    req.params.courseId,
+    req.params.userId
   );
 
-  return res.status(201).json({ message });
+  return res
+    .status(201)
+    .json({ message: "User successfully vinculed to course" });
 };
 
 export default { create, read, addCourse };

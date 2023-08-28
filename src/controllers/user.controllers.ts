@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userServices from "../services/user.services";
-import { User, UserReturn } from "../interfaces/user.interfaces";
+import { UserReturn } from "../interfaces/user.interfaces";
 
 const create = async (req: Request, res: Response): Promise<Response> => {
   const user: UserReturn = await userServices.create(req.body);
@@ -18,7 +18,7 @@ const retrieve = async (req: Request, res: Response): Promise<Response> => {
 };
 
 const deleteCourse = async (req: Request, res: Response): Promise<Response> => {
-  await userServices.deleteUser(req.params.userId);
+  await userServices.deleteUser(req.params.userId, req.params.courseId);
   return res.status(204).json();
 };
 

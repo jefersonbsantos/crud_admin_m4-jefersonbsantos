@@ -6,8 +6,6 @@ import {
 } from "../schemas/userCourse.schemas";
 import verifyToken from "../middlewares/verifyToken.middleware";
 import userCourseControllers from "../controllers/userCourse.controllers";
-import validateUserCourseIdExists from "../middlewares/validateUserCourseIdExists.middleware";
-import validateIdBodyExists from "../middlewares/validateIdBodyExists";
 
 const userCourseRouter: Router = Router();
 
@@ -23,8 +21,6 @@ userCourseRouter.post(
   "/:userCourseId/add",
   verifyToken,
   validateBody(userCourseAddCourseSchema),
-  validateUserCourseIdExists,
-  validateIdBodyExists,
   userCourseControllers.addCourse
 );
 
