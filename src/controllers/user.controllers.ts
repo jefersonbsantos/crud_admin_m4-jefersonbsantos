@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import userServices from "../services/user.services";
-import { User, UserRead } from "../interfaces/user.interfaces";
+import { User, UserReturn } from "../interfaces/user.interfaces";
 
 const create = async (req: Request, res: Response): Promise<Response> => {
-  const user: User = await userServices.create(req.body);
+  const user: UserReturn = await userServices.create(req.body);
   return res.status(201).json(user);
 };
 
 const read = async (req: Request, res: Response): Promise<Response> => {
-  const users: UserRead = await userServices.read();
+  const users: UserReturn[] = await userServices.read();
   return res.status(200).json(users);
 };
 
 const retrieve = async (req: Request, res: Response): Promise<Response> => {
-  const user: User = res.locals.foundUser;
+  const user = await userServices.retrieve(req.params.id);
   return res.status(200).json(user);
 };
 

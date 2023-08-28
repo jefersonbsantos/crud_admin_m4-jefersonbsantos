@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { Course } from "../interfaces/course.interfaces";
+import { Course, CourseCreate } from "../interfaces/course.interfaces";
 import courseServices from "../services/course.services";
 
 const create = async (req: Request, res: Response): Promise<Response> => {
-  const course: Array<Course> = await courseServices.create(req.body);
+  const course: CourseCreate = await courseServices.create(req.body);
   return res.status(201).json(course);
 };
 

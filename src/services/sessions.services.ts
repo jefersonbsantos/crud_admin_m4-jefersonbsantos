@@ -3,6 +3,7 @@ import { client } from "../database";
 import AppError from "../errors/AppError";
 import { SessionCreate, SessionReturn } from "../interfaces/session.interfaces";
 import { User, UserResult } from "../interfaces/user.interfaces";
+import { compare } from "bcryptjs";
 
 const create = async (payload: SessionCreate): Promise<SessionReturn> => {
   const query: UserResult = await client.query(
@@ -15,8 +16,9 @@ const create = async (payload: SessionCreate): Promise<SessionReturn> => {
   }
 
   const user: User = query.rows[0];
+  const verifyPassword = await compare(payload.password, user.password);
 
-  if (user.password !== payload.password) {
+  if (!verifyPassword) {
     throw new AppError("Wrong email/password", 401);
   }
 
