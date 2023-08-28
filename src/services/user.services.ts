@@ -24,22 +24,8 @@ const read = async (): Promise<UserRead> => {
   return query.rows;
 };
 
-const partialUpdate = async (
-  userId: string,
-  payload: UserUpdate
-): Promise<User> => {
-  const queryFormat: string = format(
-    'UPDATE "users" SET (%I) = ROW (%L) WHERE "id" = $1 RETURNING *;',
-    Object.keys(payload),
-    Object.values(payload)
-  );
-
-  const query: UserResult = await client.query(queryFormat, [userId]);
-  return query.rows[0];
-};
-
 const deleteUser = async (userId: string): Promise<void> => {
-  await client.query('DELETE FROM "users" WHERE "id" = $1', [userId]);
+  await client.query('DELETE FROM "courses" WHERE "id" = $1', [userId]);
 };
 
-export default { create, read, partialUpdate, deleteUser };
+export default { create, read, deleteUser };

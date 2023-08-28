@@ -28,11 +28,11 @@ const read = async (admin: boolean): Promise<UserCourseRead> => {
   if (!admin) {
     const queryString: string = `
       SELECT
-        "p".*, "u"."username"
-      FROM "playlists" "p"
+        "c".*, "u"."name"
+      FROM "courses" "c"
       JOIN "users" "u"
-        ON "p"."userId" = "u"."id"
-      WHERE "p"."privacy" = 'public';
+        ON "c"."userId" = "u"."id"
+      WHERE "c"."privacy" = 'public';
     `;
 
     const query: UserCourseResult = await client.query(queryString);
@@ -53,23 +53,23 @@ const read = async (admin: boolean): Promise<UserCourseRead> => {
 
 const addCourse = async (
   payload: UserCourseAddCourse,
-  playlistId: string
+  courseId: string
 ): Promise<string> => {
   const query: QueryResult = await client.query(
-    'SELECT * FROM "userCourses" WHERE "courseId" = $1 AND "userCourseId" = $2;',
-    [payload.courseId, playlistId]
+    'SELECT * FROM "userCourses" WHERE "courseId" = $1 AND "userId" = $2;',
+    [payload.courseId, courseId]
   );
 
   if (query.rowCount !== 0) {
-    throw new AppError("Course already added to user.", 409);
+    throw new AppError("User/course not found", 404);
   }
 
   await client.query(
-    'INSERT INTO "userCourses" ("courseId", "userCourseId") VALUES ($1, $2);',
-    [payload.courseId, playlistId]
+    'INSERT INTO "userCourses" ("courseId", "userId") VALUES ($1, $2);',
+    [payload.courseId, courseId]
   );
 
-  return "Course added to user.";
+  return "User successfully vinculed to course";
 };
 
 export default { create, read, addCourse };

@@ -16,7 +16,7 @@ const validateIdBodyExists = async (
   );
 
   if (query.rowCount === 0) {
-    throw new AppError("Course not found", 404);
+    throw new AppError("No course found", 404);
   }
 
   res.locals = { ...res.locals, foundCourse: query.rows[0] };

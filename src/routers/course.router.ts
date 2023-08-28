@@ -4,10 +4,12 @@ import validateAdmin from "../middlewares/validateAdmin.middleware";
 import validateBody from "../middlewares/validateBody.middleware";
 import { courseCreateSchema } from "../schemas/course.schemas";
 import courseControllers from "../controllers/course.controllers";
+import userControllers from "../controllers/user.controllers";
+import userCourseControllers from "../controllers/userCourse.controllers";
 
-const musicRouter: Router = Router();
+const courseRouter: Router = Router();
 
-musicRouter.post(
+courseRouter.post(
   "",
   verifyToken,
   validateAdmin,
@@ -15,6 +17,11 @@ musicRouter.post(
   courseControllers.create
 );
 
-musicRouter.get("", courseControllers.read);
+courseRouter.post("", courseControllers.create);
+courseRouter.get("", courseControllers.read);
 
-export default musicRouter;
+courseRouter.get("/:id/users");
+courseRouter.post("/:courseId/users/:userId", userCourseControllers.addCourse);
+courseRouter.delete("/:courseId/users/:userId", userControllers.deleteCourse);
+
+export default courseRouter;

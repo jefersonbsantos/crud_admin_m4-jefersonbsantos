@@ -17,20 +17,9 @@ const retrieve = async (req: Request, res: Response): Promise<Response> => {
   return res.status(200).json(user);
 };
 
-const partialUpdate = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  const { userId } = req.params;
-  const validated = res.locals;
-  const user: User = await userServices.partialUpdate(userId, req.body);
-
-  return res.status(200).json(user);
-};
-
-const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+const deleteCourse = async (req: Request, res: Response): Promise<Response> => {
   await userServices.deleteUser(req.params.userId);
   return res.status(204).json();
 };
 
-export default { create, read, retrieve, partialUpdate, deleteUser };
+export default { create, read, retrieve, deleteCourse };

@@ -12,7 +12,7 @@ const verifyUserPermission = (
   if (admin) return next();
 
   if (userId !== sub) {
-    throw new AppError("Insufficient permissions.", 403);
+    throw new AppError("Insufficient permission", 403);
   }
 
   return next();

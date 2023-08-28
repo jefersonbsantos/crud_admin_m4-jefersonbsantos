@@ -11,7 +11,7 @@ const validateIdExists = async (
   const { userId } = req.params;
 
   const query: UserResult = await client.query(
-    'SELECT * FROM "users" WHERE "id" = $1',
+    'SELECT * FROM "users" WHERE "id" = $1;',
     [userId]
   );
 

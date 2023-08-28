@@ -11,13 +11,13 @@ const create = async (payload: SessionCreate): Promise<SessionReturn> => {
   );
 
   if (query.rowCount === 0) {
-    throw new AppError("Username or password is incorrect.", 401);
+    throw new AppError("Wrong email/password", 401);
   }
 
   const user: User = query.rows[0];
 
   if (user.password !== payload.password) {
-    throw new AppError("Username or password is incorrect.", 401);
+    throw new AppError("Wrong email/password", 401);
   }
 
   const token: string = sign(
